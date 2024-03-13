@@ -15,10 +15,10 @@ class ListComplementsCartShop {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                listComplementos[j]['nome_complemento'],
+                listComplementos[j].nome_complemento,
               ),
-              Text('R\$ ${FormatNumbers.formatNumbertoString(
-                    listComplementos[j]['valor'])}',
+              Text(
+                'R\$ ${FormatNumbers.formatNumbertoString(listComplementos[j].valor)}',
               )
             ],
           ),

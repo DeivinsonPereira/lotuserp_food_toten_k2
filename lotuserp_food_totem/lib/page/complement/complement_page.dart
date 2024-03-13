@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -21,9 +21,15 @@ import '../../shared/components/endpoints.dart';
 
 class ComplementPage extends StatelessWidget {
   final produto produtoEscolhido;
-  const ComplementPage({
+  bool? isEdit;
+  Map<String, dynamic>? itemCarrinho;
+  int? index;
+  ComplementPage({
     Key? key,
     required this.produtoEscolhido,
+    this.isEdit = false,
+    this.itemCarrinho,
+    this.index,
   }) : super(key: key);
 
   @override
@@ -83,9 +89,9 @@ class ComplementPage extends StatelessWidget {
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             child: CachedNetworkImage(
-              imageUrl: Endpoints.endpointSearchImageProduct(
+              imageUrl: Endpoints().endpointSearchImageProduct(
                   produtoEscolhido.file_imagem),
-              fit: BoxFit.cover,
+              fit: BoxFit.fitHeight,
             ),
           ),
         ),
@@ -154,8 +160,13 @@ class ComplementPage extends StatelessWidget {
         child: CustomElevatedButton(
             text: 'Confirmar',
             function: () {
-              menuController.updateCarrinho(produtoEscolhido);
-              Get.back();
+              if (isEdit == false) {
+                menuController.updateCarrinho(produtoEscolhido);
+                Get.back();
+              } else {
+                menuController.updateCarrinhoCartShop(produtoEscolhido, index!);
+                Get.back();
+              }
             },
             radious: 0,
             colorButton: CustomColors.confirmButtonColor,

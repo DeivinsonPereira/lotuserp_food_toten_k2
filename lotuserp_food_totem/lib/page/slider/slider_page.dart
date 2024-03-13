@@ -1,12 +1,13 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors_in_immutables
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
+import 'package:lotus_food_totem/services/dependencies.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-//import 'package:carousel_slider/carousel_controller.dart';
 
-import '../../core/app_colors.dart';
 import '../option/option_page.dart';
 
 class SliderPage extends StatefulWidget {
@@ -19,42 +20,49 @@ class SliderPage extends StatefulWidget {
 class _SliderPageState extends State<SliderPage> {
   int activeIndex = 0;
   final controller = CarouselController();
-  final urlImages = [
-    'assets/images/imagem1.png',
-    'assets/images/imagem2.png',
-    'assets/images/imagem3.png',
-    'assets/images/imagem4.png',
-  ];
+  var sliderController = Dependencies.sliderController();
 
   var size = Get.size;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColors.backSlider,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CarouselSlider.builder(
-                carouselController: controller,
-                itemCount: urlImages.length,
-                itemBuilder: (context, index, realIndex) {
-                  final urlImage = urlImages[index];
-                  return buildImage(urlImage, index);
-                },
-                options: CarouselOptions(
-                    height: size.height * 0.9,
-                    autoPlay: true,
-                    enableInfiniteScroll: false,
-                    autoPlayAnimationDuration: const Duration(seconds: 2),
-                    enlargeCenterPage: true,
-                    onPageChanged: (index, reason) =>
-                        setState(() => activeIndex = index))),
-            const SizedBox(height: 12),
-            buildIndicator()
-          ],
-        ),
+      body: Stack(
+        children: [
+          SizedBox(
+            height: size.height,
+            width: size.width,
+            child: Image.file(File(sliderController.backgroundImage.value),
+                fit: BoxFit.cover),
+          ),
+          Positioned(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CarouselSlider.builder(
+                      carouselController: controller,
+                      itemCount: sliderController.urlImagesSlide.length,
+                      itemBuilder: (context, index, realIndex) {
+                        final urlImage =
+                            sliderController.slideImages[index].path_image;
+                        return buildImage(urlImage, index);
+                      },
+                      options: CarouselOptions(
+                          height: size.height * 0.9,
+                          autoPlay: true,
+                          enableInfiniteScroll: false,
+                          autoPlayAnimationDuration: const Duration(seconds: 2),
+                          enlargeCenterPage: true,
+                          onPageChanged: (index, reason) =>
+                              setState(() => activeIndex = index))),
+                  const SizedBox(height: 12),
+                  buildIndicator()
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -64,7 +72,7 @@ class _SliderPageState extends State<SliderPage> {
         effect: const ExpandingDotsEffect(
             dotWidth: 15, activeDotColor: Colors.blue),
         activeIndex: activeIndex,
-        count: urlImages.length,
+        count: sliderController.urlImagesSlide.length,
       );
 
   void animateToSlide(int index) => controller.animateToPage(index);
@@ -75,6 +83,6 @@ Widget buildImage(String urlImage, int index) => InkWell(
         await Get.to(() => const OptionPage());
       },
       child: Container(
-        child: Image.asset(urlImage, fit: BoxFit.cover),
+        child: Image.file(File(urlImage), fit: BoxFit.cover),
       ),
     );

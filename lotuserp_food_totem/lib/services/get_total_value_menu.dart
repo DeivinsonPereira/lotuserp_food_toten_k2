@@ -13,7 +13,7 @@ class GetTotalValueMenu {
       for (var i = 0; i < element.length; i++) {
         total += element[i]['produto'].pvenda;
         for (var j = 0; j < element[i]['complementos'].length; j++) {
-          total += element[i]['complementos'][j]['valor'];
+          total += element[i]['complementos'][j].valor;
         }
       }
     }

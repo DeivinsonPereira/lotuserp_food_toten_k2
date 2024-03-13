@@ -88,7 +88,7 @@ class CardProductMenu extends StatelessWidget {
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           child: CachedNetworkImage(
-            imageUrl: Endpoints.endpointSearchImageProduct(
+            imageUrl: Endpoints().endpointSearchImageProduct(
                 produtoEscolhido.file_imagem),
           ),
         ),

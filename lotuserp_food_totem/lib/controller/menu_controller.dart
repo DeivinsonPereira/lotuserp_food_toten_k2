@@ -5,6 +5,7 @@ import 'package:lotus_food_totem/common/components/menu_variables.dart';
 import '../collections/complemento.dart';
 import '../collections/grupo.dart';
 import '../collections/produto.dart';
+import '../page/complement/complement_page.dart';
 
 class MenuPageController extends GetxController {
   TextEditingController informationTextController = TextEditingController();
@@ -69,8 +70,7 @@ class MenuPageController extends GetxController {
   }
 
   // Atualiza a lista de complementos filtrados de acordo com o id_grupo do produto escolhido
-  void updateComplementosEscolhidos(produto produto) {
-    complementosFiltrados.clear();
+  void updateComplementosFiltrados(produto produto) {
     var newComplementos =
         complementos.where((comp) => comp.id_grupo == produto.id_grupo);
     complementosFiltrados.addAll(newComplementos.toList());
@@ -93,14 +93,19 @@ class MenuPageController extends GetxController {
     update();
   }
 
+  // Atualiza a lista de complementos escolhidos
+  void updateComplementosSelecionadosFromCartShop(complemento? itens) {
+    if (itens != null) {
+      complementosSelecionados.add(itens);
+    }
+    update();
+  }
+
   // Adiciona itens ao carrinho
   void updateCarrinho(produto produtoEscolhido) {
     var comp = [];
     for (complemento element in complementosSelecionados) {
-      comp.add({
-        'nome_complemento': element.nome_complemento,
-        'valor': element.valor
-      });
+      comp.add(element);
     }
 
     carrinho.add({
@@ -108,8 +113,41 @@ class MenuPageController extends GetxController {
       'complementos': comp,
       'info': informationTextController.text
     });
+  }
 
-    print(carrinho);
+  // Atualiza o carrinho de acordo com o item escolhido
+  void updateCarrinhoCartShop(produto produtoEscolhido, int index) {
+    var newItem = {
+      'produto': produtoEscolhido,
+      'complementos': List.from(complementosSelecionados),
+      'info': informationTextController.text
+    };
+
+    carrinho[index] = newItem;
+    update();
+    clearComplementoSelecionado();
+    clearInformationTextController();
+  }
+
+  // Edita o item do carrinho
+  void editItemCarrinho(Map<String, dynamic> item, int index) {
+    updateComplementosFiltrados(item['produto']);
+    if (item['complementos'].isNotEmpty) {
+      complementosSelecionados.clear();
+      for (var element in item['complementos']) {
+        updateComplementosSelecionadosFromCartShop(element);
+      }
+    }
+    informationTextController.text = item['info'];
+    Get.dialog(
+      barrierDismissible: false,
+      ComplementPage(
+        produtoEscolhido: item['produto'],
+        itemCarrinho: item,
+        isEdit: true,
+        index: index,
+      ),
+    );
   }
 
   // Remove o complemento selecionado
@@ -118,7 +156,12 @@ class MenuPageController extends GetxController {
     update();
   }
 
-  
+  // Remove o item do carrinho
+  void removeItemCarrinho(int index) {
+    carrinho.removeAt(index);
+    update();
+  }
+
   // Limpa a lista de Complementos Selecionados
   void clearComplementoSelecionado() {
     complementosSelecionados.clear();
@@ -154,7 +197,7 @@ class MenuPageController extends GetxController {
     informationTextController.clear();
     update();
   }
-  
+
   // Limpa as listas de Grupos, Produtos e Complementos
   void clearAll() {
     grupoSelecionado.value = 0;

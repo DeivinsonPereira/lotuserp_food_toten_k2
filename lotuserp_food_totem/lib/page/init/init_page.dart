@@ -1,4 +1,4 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +9,7 @@ import 'package:lotus_food_totem/services/dependencies.dart';
 import '../../common/custom_elevated_button.dart';
 import '../../core/app_colors.dart';
 import '../../services/check_data.dart';
+import '../../shared/repositories/download_persist_images_repository.dart';
 import '../config/config_page.dart';
 
 class InitPage extends StatelessWidget {
@@ -43,6 +44,11 @@ class InitPage extends StatelessWidget {
         child: CustomElevatedButton(
             text: 'Iniciar',
             function: () async {
+              var sliderController = Dependencies.sliderController();
+              await sliderController.setUrlImages();
+              await sliderController.getImagePath();
+              await downloadImageSlide(context);
+              await persistImagesInformation();
               await CheckData().checkDataFromDB(context);
             },
             radious: 0,

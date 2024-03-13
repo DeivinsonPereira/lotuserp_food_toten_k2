@@ -8,13 +8,23 @@ import 'dependencies.dart';
 class CarrinhoIsEmpty {
   var menuController = Dependencies.menuController();
 
-  void verifyCarrinho(BuildContext context) {
+  void verifyCarrinhoToCartShop(BuildContext context) {
     if (menuController.carrinho.isEmpty) {
       const CustomCherryError(message: 'Carrinho Vazio').show(context);
     } else {
       Get.to(() => const CartShop(),
           transition: Transition.rightToLeft,
-          duration: Duration(milliseconds: 500));
+          duration: const Duration(milliseconds: 500));
+    }
+  }
+
+   void verifyCarrinhoToPaymentForms(BuildContext context) {
+    if (menuController.carrinho.isEmpty) {
+      const CustomCherryError(message: 'Carrinho Vazio').show(context);
+    } else {
+      Get.to(() => const CartShop(),
+          transition: Transition.rightToLeft,
+          duration: const Duration(milliseconds: 500));
     }
   }
 }

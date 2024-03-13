@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '../controller/config_controller.dart';
 import '../controller/menu_controller.dart';
+import '../controller/slider_controller.dart';
 
 abstract class Dependencies {
   static ConfigController configController() {
@@ -17,6 +18,14 @@ abstract class Dependencies {
       return Get.find<MenuPageController>();
     } else {
       return Get.put(MenuPageController(), permanent: true);
+    }
+  }
+
+  static SliderController sliderController() {
+    if( Get.isRegistered<SliderController>() ) {
+      return Get.find<SliderController>();
+    } else {
+      return Get.put(SliderController(), permanent: true);
     }
   }
 }

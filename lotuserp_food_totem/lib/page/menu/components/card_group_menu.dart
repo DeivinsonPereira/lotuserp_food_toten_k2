@@ -30,7 +30,7 @@ class CardsMenu extends StatelessWidget {
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10)),
                 child: CachedNetworkImage(
-                  imageUrl: Endpoints.endpointSearchImageGroup(fileImage),
+                  imageUrl: Endpoints().endpointSearchImageGroup(fileImage),
                 ),
               ),
             ),

@@ -6,9 +6,13 @@ import 'package:lotus_food_totem/common/components/custom_text_style.dart';
 import 'package:lotus_food_totem/common/custom_elevated_button.dart';
 import 'package:lotus_food_totem/common/custom_header.dart';
 import 'package:lotus_food_totem/core/app_colors.dart';
+import 'package:lotus_food_totem/services/carrinho_is_empty.dart';
 import 'package:lotus_food_totem/services/dependencies.dart';
 
 import '../../common/custom_background_image.dart';
+import '../../common/custom_container_resume.dart';
+import '../../controller/menu_controller.dart';
+import '../payment/payment_page.dart';
 import 'components/custom_card_cart_shop.dart';
 
 class CartShop extends StatelessWidget {
@@ -16,7 +20,8 @@ class CartShop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var menuController = Dependencies.menuController();
+    Dependencies.menuController();
+    Size size = Get.size;
 
     // Constrói o botão de voltar
     Widget _buildBackButton() {
@@ -37,7 +42,10 @@ class CartShop extends StatelessWidget {
           height: 100,
           child: CustomElevatedButton(
               text: 'Confirmar',
-              function: () {},
+              function: () {
+                CarrinhoIsEmpty().verifyCarrinhoToPaymentForms(context);
+                Get.to(() => const PaymentPage());
+              },
               radious: 0,
               colorButton: CustomColors.confirmButtonColor,
               styleText: CustomTextStyle.textButtonStyle));
@@ -53,22 +61,30 @@ class CartShop extends StatelessWidget {
 
     // Constrói a lista de itens no carrinho
     Widget _buildCartList() {
-      return ListView.builder(
-          itemCount: menuController.carrinho.length,
-          itemBuilder: (context, index) {
-            var itemEscolhido = menuController.carrinho[index];
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CustomCardCartShopping(itemEscolhido: itemEscolhido),
-            );
-          });
+      return GetBuilder<MenuPageController>(
+        builder: (_) {
+          return ListView.builder(
+            itemCount: _.carrinho.length,
+            itemBuilder: (context, index) {
+              var itemEscolhido = _.carrinho[index];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CustomCardCartShopping(
+                  itemEscolhido: itemEscolhido,
+                  index: index,
+                ),
+              );
+            },
+          );
+        },
+      );
     }
 
     // Constrói a página
     return Scaffold(
       body: Stack(
         children: [
-          CustomBackgroundImage.getBackgroundImage(Get.size),
+          CustomBackgroundImage(size: Get.size),
           Positioned(
             child: Column(
               children: [
@@ -76,7 +92,7 @@ class CartShop extends StatelessWidget {
                 Expanded(
                   child: _buildCartList(),
                 ),
-                const SizedBox(height: 10),
+                CustomContainerResume(size: size),
                 _buildButtons(),
               ],
             ),

@@ -5,11 +5,12 @@ import 'package:get/get.dart';
 import 'package:lotus_food_totem/common/custom_elevated_button.dart';
 import 'package:lotus_food_totem/common/custom_header.dart';
 import 'package:lotus_food_totem/services/carrinho_is_empty.dart';
-import 'package:lotus_food_totem/services/get_total_value_menu.dart';
 
 import '../../collections/grupo.dart';
 import '../../common/custom_background_image.dart';
 import '../../common/components/custom_text_style.dart';
+import '../../common/custom_buttons_back_continue.dart';
+import '../../common/custom_container_resume.dart';
 import '../../core/app_colors.dart';
 import '../../services/dependencies.dart';
 import '../complement/complement_page.dart';
@@ -76,7 +77,8 @@ class MenuPage extends StatelessWidget {
             var produtoSelecionado = menuController.produtosEscolhidos[index];
             return GestureDetector(
               onTap: () {
-                menuController.updateComplementosEscolhidos(produtoSelecionado);
+                menuController.complementosFiltrados.clear();
+                menuController.updateComplementosFiltrados(produtoSelecionado);
                 menuController.clearComplementoSelecionado();
                 menuController.clearInformationTextController();
                 Get.dialog(
@@ -94,50 +96,7 @@ class MenuPage extends StatelessWidget {
       );
     }
 
-    // Constrói o resumo
-    Widget _buildContainerResumo() {
-      return Container(
-        width: size.width,
-        height: size.height * 0.06,
-        decoration: const BoxDecoration(
-          color: CustomColors.backSlider,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'RESUMO DO SEU PEDIDO',
-                    style: CustomTextStyle.textButtonStyleWhite,
-                  ),
-                  Obx(
-                    () => Text(
-                      'R\$ ${GetTotalValueMenu().getValue()}',
-                      style: CustomTextStyle.textButtonStyleWhite,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: Row(children: [
-                Text(
-                  'Para: ${menuController.getMealOption()}',
-                  style: const TextStyle(color: Colors.white, fontSize: 20),
-                ),
-              ]),
-            )
-          ],
-        ),
-      );
-    }
-
-    // Constrói o botão de voltar
+    /*  // Constrói o botão de voltar
     Widget _buildBackButton() {
       return SizedBox(
         height: 100,
@@ -161,19 +120,19 @@ class MenuPage extends StatelessWidget {
         child: CustomElevatedButton(
             text: 'Finalizar Pedido',
             function: () {
-              CarrinhoIsEmpty().verifyCarrinho(context);
+              CarrinhoIsEmpty().verifyCarrinhoToCartShop(context);
             },
             radious: 0,
             colorButton: CustomColors.confirmButtonColor,
             styleText: CustomTextStyle.textButtonStyle),
       );
     }
-
+*/
     // Constrói o corpo da página
     return Scaffold(
       body: Stack(
         children: [
-          CustomBackgroundImage.getBackgroundImage(size),
+          CustomBackgroundImage(size: Get.size),
           Positioned(
             child: SizedBox(
               width: size.width,
@@ -196,13 +155,30 @@ class MenuPage extends StatelessWidget {
                       child: _buildGridProducts(),
                     ),
                   ),
-                  _buildContainerResumo(),
-                  Row(
+                  // Resumo do pedido
+                  CustomContainerResume(size: size),
+
+                  // Botões de continuar e voltar
+                  CustomButtonsBackContinue(
+                      textBackButton: 'Cancelar Pedido',
+                      textContinueButton: 'Finalizar Pedido',
+                      colorBackButton: Colors.red,
+                      colorContinueButton: CustomColors.confirmButtonColor,
+                      functionBackButton: () {
+                        Get.back();
+                        Get.back();
+                        menuController.clearAll();
+                      },
+                      functionContinueButton: () {
+                        CarrinhoIsEmpty().verifyCarrinhoToCartShop(context);
+                      }),
+
+                  /* Row(
                     children: [
                       Expanded(child: _buildBackButton()),
                       Expanded(child: _buildContinueButton()),
                     ],
-                  ),
+                  ),*/
                 ],
               ),
             ),

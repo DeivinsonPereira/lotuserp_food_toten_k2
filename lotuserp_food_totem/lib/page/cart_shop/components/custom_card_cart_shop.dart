@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotus_food_totem/common/components/custom_text_style.dart';
 import 'package:lotus_food_totem/core/app_colors.dart';
+import 'package:lotus_food_totem/services/dependencies.dart';
 
 import 'package:lotus_food_totem/services/format_numbers.dart';
 
@@ -13,24 +14,28 @@ import '../../../shared/components/endpoints.dart';
 
 class CustomCardCartShopping extends StatelessWidget {
   final Map<String, dynamic> itemEscolhido;
+  final int index;
   const CustomCardCartShopping({
     Key? key,
     required this.itemEscolhido,
+    required this.index,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var menuController = Dependencies.menuController();
+
     // Constrói a imagem do card
     Widget _buildCardImage() {
       return SizedBox(
-        height: 150,
-        width: 150,
+        height: 160,
+        width: 160,
         child: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           child: CachedNetworkImage(
-            imageUrl: Endpoints.endpointSearchImageProduct(
+            imageUrl: Endpoints().endpointSearchImageProduct(
                 itemEscolhido['produto'].file_imagem),
-            fit: BoxFit.cover,
+            fit: BoxFit.fitHeight,
           ),
         ),
       );
@@ -39,7 +44,10 @@ class CustomCardCartShopping extends StatelessWidget {
     // Constrói o botão de editar
     Widget _buildIconEdit() {
       return IconButton(
-        onPressed: () {},
+        onPressed: () {
+          menuController.complementosFiltrados.clear();
+          menuController.editItemCarrinho(itemEscolhido, index);
+        },
         icon: const Icon(
           Icons.edit,
           color: CustomColors.backSlider,
@@ -51,7 +59,9 @@ class CustomCardCartShopping extends StatelessWidget {
     // Constrói o botão de remover
     Widget _buildIconRemove() {
       return IconButton(
-        onPressed: () {},
+        onPressed: () {
+          menuController.removeItemCarrinho(index);
+        },
         icon: const Icon(
           Icons.delete_rounded,
           color: Colors.red,

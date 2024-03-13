@@ -15,7 +15,7 @@ class GetIpServer {
   Logger logger = Logger();
   Future<String> getIpServer(BuildContext context) async {
     var url =
-        '${Endpoints.endpointSearchIp}${configController.ipSelecionadoController.text}${Endpoints.tipoIp}';
+        '${Endpoints().endpointSearchIp}${configController.ipSelecionadoController.text}${Endpoints().tipoIp}';
 
     Uri uri = Uri.parse(url);
 

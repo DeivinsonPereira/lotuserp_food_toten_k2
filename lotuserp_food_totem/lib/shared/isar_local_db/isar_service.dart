@@ -1,12 +1,14 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:logger/web.dart';
 import 'package:lotus_food_totem/collections/dados_empresa.dart';
 import 'package:lotus_food_totem/collections/grupo.dart';
+import 'package:lotus_food_totem/collections/image_path.dart';
 import 'package:lotus_food_totem/common/custom_cherry.dart';
 import 'package:lotus_food_totem/services/dependencies.dart';
 import 'package:lotus_food_totem/shared/components/header_request.dart';
@@ -14,6 +16,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
 import '../../collections/complemento.dart';
+import '../../collections/pagamento_forma.dart';
 import '../../collections/produto.dart';
 import '../components/endpoints.dart';
 
@@ -66,7 +69,7 @@ class IsarService {
     int i = await isar.grupos.count();
 
     String url =
-        '${configController.ipSelecionado}${Endpoints.endpointSearchGrupos}${configController.companyId}';
+        '${configController.ipSelecionado}${Endpoints().endpointSearchGrupos}${configController.companyId}';
 
     try {
       if (i > 0) {
@@ -110,7 +113,7 @@ class IsarService {
     int i = await isar.produtos.count();
 
     String url =
-        '${configController.ipSelecionado}${Endpoints.endpointSearchProdutos}${configController.companyId}';
+        '${configController.ipSelecionado}${Endpoints().endpointSearchProdutos}${configController.companyId}';
 
     try {
       if (i > 0) {
@@ -153,7 +156,7 @@ class IsarService {
     final isar = await db;
     int i = await isar.complementos.count();
     String url =
-        '${configController.ipSelecionado}${Endpoints.endpointSearchComplementos}${configController.companyId}';
+        '${configController.ipSelecionado}${Endpoints().endpointSearchComplementos}${configController.companyId}';
 
     try {
       if (i > 0) {
@@ -190,6 +193,52 @@ class IsarService {
     }
   }
 
+  // TODO implementar a requisição
+  // Busca as formas de pagamento da api e persiste no banco de dados local
+  Future<List<pagamento_forma>> getFoodTotem() async {
+    var configController = Dependencies.configController();
+    final isar = await db;
+    int i = await isar.pagamento_formas.count();
+    //TODO implementar o endpoint
+    String url =
+        '/*${configController.ipSelecionado}*/';
+
+    try {
+      if (i > 0) {
+        isar.writeTxn(
+          () async {
+            await isar.pagamento_formas.clear();
+          },
+        );
+      }
+
+      final resposta = await http.get(
+        Uri.parse(url),
+        headers: HeaderRequest.headers,
+      );
+      if (resposta.statusCode == 200) {
+        var comp = jsonDecode(resposta.body);
+        List<pagamento_forma> formaPagamentos = [];
+
+        for (var element in comp['itens']) {
+          formaPagamentos.add(pagamento_forma.fromMap(element));
+        }
+
+        isar.writeTxn(() async {
+          await isar.pagamento_formas.putAll(formaPagamentos);
+        });
+        return formaPagamentos;
+      } else {
+        logger.e('Erro ao carregar os pagamentos');
+        return [];
+      }
+    } catch (e) {
+      logger.e('Erro ao carregar os pagamentos: $e');
+      return [];
+    }
+
+  }
+
   // Busca os dados da empresa no banco de dados local
   Future<dados_empresa?> getDadosEmpresa() async {
     final isar = await db;
@@ -203,6 +252,99 @@ class IsarService {
     }
   }
 
+  // Salva os dados das imagens no banco de dados local
+  Future<Isar> saveImagens() async {
+    final isar = await db;
+
+    int i = await isar.image_paths.count();
+
+    if (i >= 0) {
+      isar.writeTxn(
+        () async {
+          await isar.image_paths.clear();
+        },
+      );
+    }
+    try {
+      isar.writeTxn(() async {
+        Directory dir = await getApplicationDocumentsDirectory();
+        String pathName = '${dir.path}/assets/images/';
+        Directory directory = Directory(pathName);
+        List<String> files = [];
+        List<FileSystemEntity> filesPath = [];
+
+        if (await directory.exists()) {
+          filesPath = directory.listSync();
+          for (var i = 0; i < filesPath.length; i++) {
+            files.add(filesPath[i].path.split('/').last);
+          }
+        }
+
+        List<image_path> images = [];
+
+        List<String> saveFile = [
+          'TOTEM_SLIDE1.PNG',
+          'TOTEM_SLIDE2.PNG',
+          'TOTEM_SLIDE3.PNG',
+          'TOTEM_MARCA_DAGUA.PNG',
+          'TOTEM_LOGO_EMPRESA.PNG',
+        ];
+
+        //SALVA IMAGENS NO BANCO DE DADOS
+        for (var i = 0; i < saveFile.length; i++) {
+          image_path image = image_path()
+            ..file_image = saveFile[i]
+            ..path_image = filesPath[i].path;
+
+          images.add(image);
+        }
+        await isar.image_paths.putAll(images);
+      });
+    } catch (e) {
+      logger.e('Erro ao salvar imagem dos grupos: $e');
+    }
+    return isar;
+  }
+
+  // Busca os dados da logo no banco de dados local
+  Future<image_path> getImageLogoPath() async {
+    final isar = await db;
+
+    image_path? data = await isar.image_paths.filter().file_imageContains('LOGO').findFirst();
+
+    if (data != null) {
+      return data;
+    } else {
+      return image_path();
+    }
+  }
+  
+  // Busca os dados do background no banco de dados local
+  Future<image_path> getImageBackgroundPath() async {
+  final isar = await db;
+
+  image_path? data = await isar.image_paths.filter().file_imageContains('MARCA_DAGUA').findFirst();
+
+  if (data != null) {
+    return data;
+  } else {
+    return image_path();
+  }
+  }
+
+  // Busca os dados dos slides no banco de dados local
+  Future<List<image_path>> getImageSlidePath() async {
+  final isar = await db;
+
+  List<image_path>? data = await isar.image_paths.filter().file_imageContains('SLIDE').findAll();
+
+  if (data.isNotEmpty) {
+    return data;
+  } else {
+    return [];
+  }
+  }
+  
   // Abre o banco de dados
   Future<Isar> openDB() async {
     final dir = await getApplicationSupportDirectory();
@@ -213,6 +355,7 @@ class IsarService {
           GrupoSchema,
           ProdutoSchema,
           ComplementoSchema,
+          Image_pathSchema,
         ],
         directory: dir.path,
       );
