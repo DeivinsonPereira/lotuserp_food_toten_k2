@@ -73,11 +73,6 @@ class pagamento_forma {
 
   String toJson() => json.encode(toMap());
 
-  factory pagamento_forma.fromJson(String source) => pagamento_forma.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory pagamento_forma.fromJson(String source) =>
+      pagamento_forma.fromMap(json.decode(source) as Map<String, dynamic>);
 }
-
-
-
-
-
-

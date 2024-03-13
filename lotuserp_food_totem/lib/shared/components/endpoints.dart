@@ -30,8 +30,11 @@ class Endpoints {
     return '${configController.ipSelecionado}getimagem?categoria=PRO&file=$file&retorno=URL';
   }
 
-  String enpointSearchImageDIV(String file) {
+  String endpointSearchImageDIV(String file) {
     return '${configController.ipSelecionado}getimagem?categoria=DIV&file=$file&retorno=URL';
   }
 
+  String endpointSearchPaymentForm() {
+    return '${configController.ipSelecionado}food_totem_id?pid=${configController.deviceId.value}';
+  }
 }

@@ -11,6 +11,7 @@ import '../../core/app_colors.dart';
 import '../../services/check_data.dart';
 import '../../shared/repositories/download_persist_images_repository.dart';
 import '../config/config_page.dart';
+import '../loading/loading_page.dart';
 
 class InitPage extends StatelessWidget {
   const InitPage({super.key});
@@ -44,6 +45,10 @@ class InitPage extends StatelessWidget {
         child: CustomElevatedButton(
             text: 'Iniciar',
             function: () async {
+              Get.dialog(
+                barrierDismissible: false,
+                const LoadingScreen(),
+              );
               var sliderController = Dependencies.sliderController();
               await sliderController.setUrlImages();
               await sliderController.getImagePath();

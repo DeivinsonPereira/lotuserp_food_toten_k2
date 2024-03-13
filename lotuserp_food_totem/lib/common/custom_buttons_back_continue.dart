@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
 import 'package:flutter/material.dart';
@@ -13,15 +13,18 @@ class CustomButtonsBackContinue extends StatelessWidget {
   final Color colorContinueButton;
   final Function() functionBackButton;
   final Function() functionContinueButton;
-  const CustomButtonsBackContinue({
-    Key? key,
-    required this.textBackButton,
-    required this.textContinueButton,
-    required this.colorBackButton,
-    required this.colorContinueButton,
-    required this.functionBackButton,
-    required this.functionContinueButton,
-  }) : super(key: key);
+  bool? isPaymentPage;
+
+  CustomButtonsBackContinue(
+      {Key? key,
+      required this.textBackButton,
+      required this.textContinueButton,
+      required this.colorBackButton,
+      required this.colorContinueButton,
+      required this.functionBackButton,
+      required this.functionContinueButton,
+      this.isPaymentPage = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +56,11 @@ class CustomButtonsBackContinue extends StatelessWidget {
       Expanded(
         child: _buildBackButton(),
       ),
-      Expanded(
-        child: _buildContinueButton(),
-      ),
+      isPaymentPage == true
+          ? const SizedBox()
+          : Expanded(
+              child: _buildContinueButton(),
+            ),
     ]);
   }
 }

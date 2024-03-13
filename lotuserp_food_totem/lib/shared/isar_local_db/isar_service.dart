@@ -193,15 +193,11 @@ class IsarService {
     }
   }
 
-  // TODO implementar a requisição
   // Busca as formas de pagamento da api e persiste no banco de dados local
-  Future<List<pagamento_forma>> getFoodTotem() async {
-    var configController = Dependencies.configController();
+  Future<List<pagamento_forma>> getPaymentForm(BuildContext context) async {
     final isar = await db;
     int i = await isar.pagamento_formas.count();
-    //TODO implementar o endpoint
-    String url =
-        '/*${configController.ipSelecionado}*/';
+    String url = Endpoints().endpointSearchPaymentForm();
 
     try {
       if (i > 0) {
@@ -217,26 +213,38 @@ class IsarService {
         headers: HeaderRequest.headers,
       );
       if (resposta.statusCode == 200) {
-        var comp = jsonDecode(resposta.body);
-        List<pagamento_forma> formaPagamentos = [];
+        var data = jsonDecode(resposta.body);
+        if (data['success'] == true) {
+          List<pagamento_forma> formaPagamentos = [];
 
-        for (var element in comp['itens']) {
-          formaPagamentos.add(pagamento_forma.fromMap(element));
+          for (var element in data['itens']) {
+            formaPagamentos.add(pagamento_forma.fromMap(element));
+          }
+          isar.writeTxn(() async {
+            await isar.pagamento_formas.putAll(formaPagamentos);
+          });
+          return formaPagamentos;
+        } else {
+          const CustomCherryError(
+                  message: 'Erro ao carregar as formas de pagamento')
+              .show(context);
+          logger.e('Erro ao carregar os pagamentos');
+          return [];
         }
-
-        isar.writeTxn(() async {
-          await isar.pagamento_formas.putAll(formaPagamentos);
-        });
-        return formaPagamentos;
       } else {
+        const CustomCherryError(
+                message: 'Erro ao carregar as formas de pagamento')
+            .show(context);
         logger.e('Erro ao carregar os pagamentos');
         return [];
       }
     } catch (e) {
+      const CustomCherryError(
+              message: 'Erro ao carregar as formas de pagamento')
+          .show(context);
       logger.e('Erro ao carregar os pagamentos: $e');
       return [];
     }
-
   }
 
   // Busca os dados da empresa no banco de dados local
@@ -310,7 +318,8 @@ class IsarService {
   Future<image_path> getImageLogoPath() async {
     final isar = await db;
 
-    image_path? data = await isar.image_paths.filter().file_imageContains('LOGO').findFirst();
+    image_path? data =
+        await isar.image_paths.filter().file_imageContains('LOGO').findFirst();
 
     if (data != null) {
       return data;
@@ -318,33 +327,37 @@ class IsarService {
       return image_path();
     }
   }
-  
+
   // Busca os dados do background no banco de dados local
   Future<image_path> getImageBackgroundPath() async {
-  final isar = await db;
+    final isar = await db;
 
-  image_path? data = await isar.image_paths.filter().file_imageContains('MARCA_DAGUA').findFirst();
+    image_path? data = await isar.image_paths
+        .filter()
+        .file_imageContains('MARCA_DAGUA')
+        .findFirst();
 
-  if (data != null) {
-    return data;
-  } else {
-    return image_path();
-  }
+    if (data != null) {
+      return data;
+    } else {
+      return image_path();
+    }
   }
 
   // Busca os dados dos slides no banco de dados local
   Future<List<image_path>> getImageSlidePath() async {
-  final isar = await db;
+    final isar = await db;
 
-  List<image_path>? data = await isar.image_paths.filter().file_imageContains('SLIDE').findAll();
+    List<image_path>? data =
+        await isar.image_paths.filter().file_imageContains('SLIDE').findAll();
 
-  if (data.isNotEmpty) {
-    return data;
-  } else {
-    return [];
+    if (data.isNotEmpty) {
+      return data;
+    } else {
+      return [];
+    }
   }
-  }
-  
+
   // Abre o banco de dados
   Future<Isar> openDB() async {
     final dir = await getApplicationSupportDirectory();
@@ -356,6 +369,7 @@ class IsarService {
           ProdutoSchema,
           ComplementoSchema,
           Image_pathSchema,
+          Pagamento_formaSchema,
         ],
         directory: dir.path,
       );

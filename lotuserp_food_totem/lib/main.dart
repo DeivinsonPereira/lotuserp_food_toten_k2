@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:lotus_food_totem/collections/dados_empresa.dart';
 import 'package:lotus_food_totem/collections/image_path.dart';
+import 'package:lotus_food_totem/collections/pagamento_forma.dart';
 import 'collections/complemento.dart';
 import 'collections/grupo.dart';
 import 'collections/produto.dart';
@@ -16,7 +17,7 @@ Future<void> main() async {
   final dir = await getApplicationSupportDirectory();
   //abre o banco de dados e as tabelas
   await Isar.open(
-    [Dados_empresaSchema, GrupoSchema, ProdutoSchema, ComplementoSchema, Image_pathSchema],
+    [Dados_empresaSchema, GrupoSchema, ProdutoSchema, ComplementoSchema, Image_pathSchema, Pagamento_formaSchema],
     directory: dir.path,
     inspector: true,
   );

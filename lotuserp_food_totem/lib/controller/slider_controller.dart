@@ -15,22 +15,15 @@ class SliderController extends GetxController {
   var backgroundImage = ''.obs;
   var slideImages = [].obs;
 
-  /* @override
-  void onInit() {
-    super.onInit();
-    setUrlImages();
-    getImagePath();
-  }*/
-
   Future<void> setUrlImages() async {
     for (int i = 0; i < 3; i++) {
       urlImagesSlide
-          .add(Endpoints().enpointSearchImageDIV('TOTEM_SLIDE${(i + 1)}.PNG'));
+          .add(Endpoints().endpointSearchImageDIV('TOTEM_SLIDE${(i + 1)}.PNG'));
     }
     urlImagesBackground.value =
-        Endpoints().enpointSearchImageDIV('TOTEM_MARCA_DAGUA.PNG');
+        Endpoints().endpointSearchImageDIV('TOTEM_MARCA_DAGUA.PNG');
     urlImagesLogo.value =
-        Endpoints().enpointSearchImageDIV('TOTEM_LOGO_EMPRESA.PNG');
+        Endpoints().endpointSearchImageDIV('TOTEM_LOGO_EMPRESA.PNG');
   }
 
   Future<void> getImagePath() async {

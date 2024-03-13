@@ -1,14 +1,12 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, unused_element
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lotus_food_totem/common/custom_elevated_button.dart';
 import 'package:lotus_food_totem/common/custom_header.dart';
 import 'package:lotus_food_totem/services/carrinho_is_empty.dart';
 
 import '../../collections/grupo.dart';
 import '../../common/custom_background_image.dart';
-import '../../common/components/custom_text_style.dart';
 import '../../common/custom_buttons_back_continue.dart';
 import '../../common/custom_container_resume.dart';
 import '../../core/app_colors.dart';
@@ -96,38 +94,23 @@ class MenuPage extends StatelessWidget {
       );
     }
 
-    /*  // Constrói o botão de voltar
-    Widget _buildBackButton() {
-      return SizedBox(
-        height: 100,
-        child: CustomElevatedButton(
-            text: 'Cancelar Pedido',
-            function: () {
-              Get.back();
-              Get.back();
-              menuController.clearAll();
-            },
-            radious: 0,
-            colorButton: Colors.red,
-            styleText: CustomTextStyle.textButtonStyleWhite),
-      );
+    // Botões de continuar e voltar
+    Widget _buildButtons() {
+      return CustomButtonsBackContinue(
+          textBackButton: 'Cancelar Pedido',
+          textContinueButton: 'Finalizar Pedido',
+          colorBackButton: Colors.red,
+          colorContinueButton: CustomColors.confirmButtonColor,
+          functionBackButton: () {
+            Get.back();
+            Get.back();
+            menuController.clearAll();
+          },
+          functionContinueButton: () {
+            CarrinhoIsEmpty().verifyCarrinhoToCartShop(context);
+          });
     }
 
-    // Constrói o botão de continuar
-    Widget _buildContinueButton() {
-      return SizedBox(
-        height: 100,
-        child: CustomElevatedButton(
-            text: 'Finalizar Pedido',
-            function: () {
-              CarrinhoIsEmpty().verifyCarrinhoToCartShop(context);
-            },
-            radious: 0,
-            colorButton: CustomColors.confirmButtonColor,
-            styleText: CustomTextStyle.textButtonStyle),
-      );
-    }
-*/
     // Constrói o corpo da página
     return Scaffold(
       body: Stack(
@@ -157,28 +140,7 @@ class MenuPage extends StatelessWidget {
                   ),
                   // Resumo do pedido
                   CustomContainerResume(size: size),
-
-                  // Botões de continuar e voltar
-                  CustomButtonsBackContinue(
-                      textBackButton: 'Cancelar Pedido',
-                      textContinueButton: 'Finalizar Pedido',
-                      colorBackButton: Colors.red,
-                      colorContinueButton: CustomColors.confirmButtonColor,
-                      functionBackButton: () {
-                        Get.back();
-                        Get.back();
-                        menuController.clearAll();
-                      },
-                      functionContinueButton: () {
-                        CarrinhoIsEmpty().verifyCarrinhoToCartShop(context);
-                      }),
-
-                  /* Row(
-                    children: [
-                      Expanded(child: _buildBackButton()),
-                      Expanded(child: _buildContinueButton()),
-                    ],
-                  ),*/
+                  _buildButtons(),
                 ],
               ),
             ),

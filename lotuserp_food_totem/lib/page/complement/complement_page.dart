@@ -5,7 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotus_food_totem/common/components/custom_text_style.dart';
-import 'package:lotus_food_totem/common/custom_elevated_button.dart';
+import 'package:lotus_food_totem/common/custom_buttons_back_continue.dart';
 
 import 'package:lotus_food_totem/common/custom_header_popup.dart';
 import 'package:lotus_food_totem/common/custom_text_field_large.dart';
@@ -89,8 +89,8 @@ class ComplementPage extends StatelessWidget {
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             child: CachedNetworkImage(
-              imageUrl: Endpoints().endpointSearchImageProduct(
-                  produtoEscolhido.file_imagem),
+              imageUrl: Endpoints()
+                  .endpointSearchImageProduct(produtoEscolhido.file_imagem),
               fit: BoxFit.fitHeight,
             ),
           ),
@@ -135,7 +135,7 @@ class ComplementPage extends StatelessWidget {
         ),
       );
     }
-
+/*
     // Constrói o botão de voltar
     Widget _buildButtonBack() {
       return SizedBox(
@@ -151,9 +151,9 @@ class ComplementPage extends StatelessWidget {
             colorButton: CustomColors.informationBox,
             styleText: CustomTextStyle.textButtonStyleWhite),
       );
-    }
+    }*/
 
-    // Constrói o botão de confirmar
+  /*  // Constrói o botão de confirmar
     Widget _buildButtonConfirm() {
       return SizedBox(
         height: 100,
@@ -172,18 +172,38 @@ class ComplementPage extends StatelessWidget {
             colorButton: CustomColors.confirmButtonColor,
             styleText: CustomTextStyle.textButtonStyle),
       );
-    }
+    }*/
 
     // Constrói a linha dos botões de voltar e confirmar
     Widget _buildButtons() {
-      return Row(children: [
+      return CustomButtonsBackContinue(
+          textBackButton: 'Voltar',
+          textContinueButton: 'Confirmar',
+          colorBackButton: CustomColors.informationBox,
+          colorContinueButton: CustomColors.confirmButtonColor,
+          functionBackButton: () {
+            Get.back();
+            menuController.clearComplementoSelecionado();
+            menuController.clearInformationTextController();
+          },
+          functionContinueButton: () {
+            if (isEdit == false) {
+              menuController.updateCarrinho(produtoEscolhido);
+              Get.back();
+            } else {
+              menuController.updateCarrinhoCartShop(produtoEscolhido, index!);
+              Get.back();
+            }
+          });
+
+      /*Row(children: [
         Expanded(
           child: _buildButtonBack(),
         ),
         Expanded(
           child: _buildButtonConfirm(),
         ),
-      ]);
+      ]);*/
     }
 
     // Constrói a linha do Resumo

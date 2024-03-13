@@ -2,8 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lotus_food_totem/common/components/custom_text_style.dart';
-import 'package:lotus_food_totem/common/custom_elevated_button.dart';
+import 'package:lotus_food_totem/common/custom_buttons_back_continue.dart';
 import 'package:lotus_food_totem/common/custom_header.dart';
 import 'package:lotus_food_totem/core/app_colors.dart';
 import 'package:lotus_food_totem/services/carrinho_is_empty.dart';
@@ -22,8 +21,10 @@ class CartShop extends StatelessWidget {
   Widget build(BuildContext context) {
     Dependencies.menuController();
     Size size = Get.size;
+    var paymentController = Dependencies.paymentController();
+    
 
-    // Constrói o botão de voltar
+    /*  // Constrói o botão de voltar
     Widget _buildBackButton() {
       return SizedBox(
         height: 100,
@@ -49,14 +50,27 @@ class CartShop extends StatelessWidget {
               radious: 0,
               colorButton: CustomColors.confirmButtonColor,
               styleText: CustomTextStyle.textButtonStyle));
-    }
+    }*/
 
     // Constrói a linha dos botões
     Widget _buildButtons() {
-      return Row(children: [
+      return CustomButtonsBackContinue(
+        textBackButton: 'Voltar',
+        textContinueButton: 'Confirmar',
+        colorBackButton: CustomColors.informationBox,
+        colorContinueButton: CustomColors.confirmButtonColor,
+        functionBackButton: () => Get.back(),
+        functionContinueButton: () {
+          CarrinhoIsEmpty().verifyCarrinhoToPaymentForms(context);
+          paymentController.setPaymentForm(context);
+          Get.to(() => const PaymentPage());
+        },
+      );
+
+      /*Row(children: [
         Expanded(child: _buildBackButton()),
         Expanded(child: _buildConfirmButton()),
-      ]);
+      ]);*/
     }
 
     // Constrói a lista de itens no carrinho
