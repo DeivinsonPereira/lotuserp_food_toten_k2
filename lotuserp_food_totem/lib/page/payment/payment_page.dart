@@ -17,6 +17,7 @@ class PaymentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var paymentController = Dependencies.paymentController();
+    
 
     // Constrói o botão de voltar e de confirmar
     Widget _buildButton() {

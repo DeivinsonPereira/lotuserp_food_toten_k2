@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:lotus_food_totem/controller/payment_controller.dart';
+import 'package:lotus_food_totem/controller/time_out_controller.dart';
 
 import '../controller/config_controller.dart';
 import '../controller/menu_controller.dart';
@@ -35,6 +36,14 @@ abstract class Dependencies {
       return Get.find<PaymentController>();
     } else {
       return Get.put(PaymentController(), permanent: true);
+    }
+  }
+
+  static TimeOutController timeOutController() {
+    if( Get.isRegistered<TimeOutController>() ) {
+      return Get.find<TimeOutController>();
+    } else {
+      return Get.put(TimeOutController(), permanent: true);
     }
   }
 }
