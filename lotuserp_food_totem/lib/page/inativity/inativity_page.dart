@@ -18,7 +18,7 @@ class InativityPage extends StatelessWidget {
         width: Get.size.width * 0.8,
         child: Column(
           children: [
-            const CustomHeaderPopup(icon: Icons.warning, text: 'Inatividade'),
+            CustomHeaderPopup(icon: Icons.warning, text: 'Inatividade'),
             const Expanded(
               child: Text('Você ainda está aí?',
                   style: CustomTextStyle.textButtonStyle),

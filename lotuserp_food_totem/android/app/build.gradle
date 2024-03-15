@@ -45,7 +45,7 @@ android {
         applicationId "com.example.lotus_food_totem"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -56,6 +56,16 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
+            
+         minifyEnabled true
+         shrinkResources true
+         proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+        }
+    }
+    repositories {
+        flatDir {
+            dirs 'libs' // refere-se à pasta libs dentro de app
         }
     }
 }
@@ -64,4 +74,7 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation 'com.github.felHR85:UsbSerial:6.1.0'
+    implementation(name: 'it4r_06.12.04', ext: 'aar')
+}

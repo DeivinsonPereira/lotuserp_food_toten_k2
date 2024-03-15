@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
 import 'package:lotus_food_totem/services/dependencies.dart';
+import 'package:lotus_food_totem/services/image_slider_tratment.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../option/option_page.dart';
@@ -41,21 +42,23 @@ class _SliderPageState extends State<SliderPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CarouselSlider.builder(
-                      carouselController: controller,
-                      itemCount: sliderController.urlImagesSlide.length,
-                      itemBuilder: (context, index, realIndex) {
-                        final urlImage =
-                            sliderController.slideImages[index].path_image;
-                        return buildImage(urlImage, index);
-                      },
-                      options: CarouselOptions(
-                          height: size.height * 0.9,
-                          autoPlay: true,
-                          enableInfiniteScroll: false,
-                          autoPlayAnimationDuration: const Duration(seconds: 2),
-                          enlargeCenterPage: true,
-                          onPageChanged: (index, reason) =>
-                              setState(() => activeIndex = index))),
+                    carouselController: controller,
+                    itemCount: sliderController.urlImagesSlide.length,
+                    itemBuilder: (context, index, realIndex) {
+                      final urlImage =
+                          sliderController.slideImages[index].path_image;
+                      return buildImage(urlImage, index);
+                    },
+                    options: CarouselOptions(
+                      height: size.height * 0.9,
+                      autoPlay: true,
+                      enableInfiniteScroll: false,
+                      autoPlayAnimationDuration: const Duration(seconds: 2),
+                      enlargeCenterPage: true,
+                      onPageChanged: (index, reason) =>
+                          setState(() => activeIndex = index),
+                    ),
+                  ),
                   const SizedBox(height: 12),
                   buildIndicator()
                 ],
@@ -80,9 +83,13 @@ class _SliderPageState extends State<SliderPage> {
 
 Widget buildImage(String urlImage, int index) => InkWell(
       onTap: () async {
+        var menuController = Dependencies.menuController();
+        var paymentController = Dependencies.paymentController();
+        menuController.clearAll();
+        paymentController.clearAll();
         await Get.to(() => const OptionPage());
       },
       child: Container(
-        child: Image.file(File(urlImage), fit: BoxFit.cover),
+        child: ImageSliderTratment().buildSlider(urlImage),
       ),
     );

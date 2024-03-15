@@ -53,7 +53,7 @@ class InitPage extends StatelessWidget {
               await sliderController.setUrlImages();
               await sliderController.getImagePath();
               await downloadImageSlide(context);
-              await persistImagesInformation();
+              await persistImagesInformation(context);
               await CheckData().checkDataFromDB(context);
             },
             radious: 0,

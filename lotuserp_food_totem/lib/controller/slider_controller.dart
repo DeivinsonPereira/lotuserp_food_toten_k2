@@ -16,6 +16,7 @@ class SliderController extends GetxController {
   var slideImages = [].obs;
 
   Future<void> setUrlImages() async {
+    urlImagesSlide.clear();
     for (int i = 0; i < 3; i++) {
       urlImagesSlide
           .add(Endpoints().endpointSearchImageDIV('TOTEM_SLIDE${(i + 1)}.PNG'));

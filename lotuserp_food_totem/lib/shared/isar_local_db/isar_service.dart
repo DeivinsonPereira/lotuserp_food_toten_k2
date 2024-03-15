@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:logger/web.dart';
 import 'package:lotus_food_totem/collections/dados_empresa.dart';
@@ -261,7 +262,7 @@ class IsarService {
   }
 
   // Salva os dados das imagens no banco de dados local
-  Future<Isar> saveImagens() async {
+  Future<Isar> saveImagens(BuildContext context) async {
     final isar = await db;
 
     int i = await isar.image_paths.count();
@@ -300,11 +301,15 @@ class IsarService {
 
         //SALVA IMAGENS NO BANCO DE DADOS
         for (var i = 0; i < saveFile.length; i++) {
-          image_path image = image_path()
-            ..file_image = saveFile[i]
-            ..path_image = filesPath[i].path;
+          if (filesPath.isNotEmpty) {
+            image_path image = image_path()
+              ..file_image = saveFile[i]
+              ..path_image = filesPath[i].path;
 
-          images.add(image);
+            images.add(image);
+          } else {
+            Get.back();
+          }
         }
         await isar.image_paths.putAll(images);
       });

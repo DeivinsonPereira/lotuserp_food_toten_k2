@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, no_leading_underscores_for_local_identifiers
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotus_food_totem/common/components/custom_text_style.dart';
@@ -7,10 +6,10 @@ import 'package:lotus_food_totem/core/app_colors.dart';
 import 'package:lotus_food_totem/services/dependencies.dart';
 
 import 'package:lotus_food_totem/services/format_numbers.dart';
+import 'package:lotus_food_totem/services/image_cart_shop_tratment.dart';
 
 import '../../../services/get_total_per_item.dart';
 import '../../../services/list_complements_cart_shop.dart';
-import '../../../shared/components/endpoints.dart';
 
 class CustomCardCartShopping extends StatelessWidget {
   final Map<String, dynamic> itemEscolhido;
@@ -32,11 +31,7 @@ class CustomCardCartShopping extends StatelessWidget {
         width: 160,
         child: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
-          child: CachedNetworkImage(
-            imageUrl: Endpoints().endpointSearchImageProduct(
-                itemEscolhido['produto'].file_imagem),
-            fit: BoxFit.fitHeight,
-          ),
+          child: ImageCartShopTratment().buildImage(itemEscolhido['produto'].file_imagem)
         ),
       );
     }

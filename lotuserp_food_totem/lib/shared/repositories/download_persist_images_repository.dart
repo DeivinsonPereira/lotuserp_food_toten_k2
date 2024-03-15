@@ -32,7 +32,7 @@ Future<void> downloadImageSlide(BuildContext context) async {
           Uri.parse(
             urlImage,
           ),
-          headers: Header.header);
+          headers: HeaderRequest.header);
 
       if (response.statusCode == 200) {
         try {
@@ -43,6 +43,9 @@ Future<void> downloadImageSlide(BuildContext context) async {
             continue;
           }
         } catch (e) {
+          if (i >= 3) {
+            break;
+          }
           String pathName =
               '${dir.path}/assets/images/TOTEM_SLIDE${(i + 1)}.PNG';
 
@@ -63,7 +66,7 @@ Future<void> downloadImageSlide(BuildContext context) async {
           Uri.parse(
             urlImageBackground,
           ),
-          headers: Header.header);
+          headers: HeaderRequest.header);
       if (response.statusCode == 200) {
         try {
           var jsonResponse = jsonDecode(response.body);
@@ -99,7 +102,7 @@ Future<void> downloadImageSlide(BuildContext context) async {
           Uri.parse(
             urlImageLogo,
           ),
-          headers: Header.header);
+          headers: HeaderRequest.header);
       if (response.statusCode == 200) {
         try {
           var jsonResponse = jsonDecode(response.body);
@@ -154,9 +157,9 @@ Future<void> deleteExistingFiles(String folderPath) async {
 }
 
 // PERSISTIR AS IMAGENS
-Future<void> persistImagesInformation() async {
+Future<void> persistImagesInformation(BuildContext context) async {
   IsarService service = IsarService();
-  await service.saveImagens();
+  await service.saveImagens(context);
 }
 
 // LISTAR OS ARQUIVOS QUE TEM DENTRO DE DETERMINADO DIRETORIO

@@ -19,6 +19,7 @@ class MenuPageController extends GetxController {
   var complementosFiltrados = [].obs;
   var complementosSelecionados = [].obs;
   var carrinho = [].obs;
+  var total = 0.0.obs;
 
   // Modifica a opção da refeição ( 0 - levar, 1 - comer aqui)
   void setMealOption(int value) {
@@ -26,11 +27,16 @@ class MenuPageController extends GetxController {
     update();
   }
 
+  void setTotal(double value) {
+    total.value = value;
+    update();
+  }
+
   // Retorna a opção da refeição
   String getMealOption() {
     return mealOption.value == MenuVariables.COMER_AQUI
-        ? 'Levar'
-        : 'Comer aqui';
+        ? 'COMER AQUI'
+        : 'LEVAR';
   }
 
   // Adiciona "grupos" vindos do banco de dados local na variavel grupos
@@ -205,6 +211,7 @@ class MenuPageController extends GetxController {
     complementosFiltrados.clear();
     complementosSelecionados.clear();
     carrinho.clear();
+    total.value = 0.0;
     update();
   }
 }

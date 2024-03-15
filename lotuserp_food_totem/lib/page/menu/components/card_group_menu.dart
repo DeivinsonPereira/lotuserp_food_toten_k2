@@ -1,8 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../../shared/components/endpoints.dart';
+import '../../../services/image_group_tratment.dart';
 
 class CardsMenu extends StatelessWidget {
   final Size size;
@@ -29,9 +28,7 @@ class CardsMenu extends StatelessWidget {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10)),
-                child: CachedNetworkImage(
-                  imageUrl: Endpoints().endpointSearchImageGroup(fileImage),
-                ),
+                child: ImageGroupTratment().imageGroup(fileImage),
               ),
             ),
             Expanded(

@@ -69,9 +69,19 @@ const Pagamento_formaSchema = CollectionSchema(
       name: r'id_usuario_cinculo',
       type: IsarType.long,
     ),
-    r'status': PropertySchema(
+    r'print_comanda': PropertySchema(
       id: 10,
+      name: r'print_comanda',
+      type: IsarType.long,
+    ),
+    r'status': PropertySchema(
+      id: 11,
       name: r'status',
+      type: IsarType.long,
+    ),
+    r'tef_tipo': PropertySchema(
+      id: 12,
+      name: r'tef_tipo',
       type: IsarType.long,
     )
   },
@@ -115,7 +125,9 @@ void _pagamento_formaSerialize(
   writer.writeLong(offsets[7], object.id_tprecebe_tef_pix);
   writer.writeLong(offsets[8], object.id_tprecebe_tef_voucher);
   writer.writeLong(offsets[9], object.id_usuario_cinculo);
-  writer.writeLong(offsets[10], object.status);
+  writer.writeLong(offsets[10], object.print_comanda);
+  writer.writeLong(offsets[11], object.status);
+  writer.writeLong(offsets[12], object.tef_tipo);
 }
 
 pagamento_forma _pagamento_formaDeserialize(
@@ -136,7 +148,9 @@ pagamento_forma _pagamento_formaDeserialize(
     id_tprecebe_tef_pix: reader.readLong(offsets[7]),
     id_tprecebe_tef_voucher: reader.readLong(offsets[8]),
     id_usuario_cinculo: reader.readLong(offsets[9]),
-    status: reader.readLong(offsets[10]),
+    print_comanda: reader.readLong(offsets[10]),
+    status: reader.readLong(offsets[11]),
+    tef_tipo: reader.readLong(offsets[12]),
   );
   return object;
 }
@@ -169,6 +183,10 @@ P _pagamento_formaDeserializeProp<P>(
     case 9:
       return (reader.readLong(offset)) as P;
     case 10:
+      return (reader.readLong(offset)) as P;
+    case 11:
+      return (reader.readLong(offset)) as P;
+    case 12:
       return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -967,6 +985,62 @@ extension pagamento_formaQueryFilter
   }
 
   QueryBuilder<pagamento_forma, pagamento_forma, QAfterFilterCondition>
+      print_comandaEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'print_comanda',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<pagamento_forma, pagamento_forma, QAfterFilterCondition>
+      print_comandaGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'print_comanda',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<pagamento_forma, pagamento_forma, QAfterFilterCondition>
+      print_comandaLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'print_comanda',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<pagamento_forma, pagamento_forma, QAfterFilterCondition>
+      print_comandaBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'print_comanda',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<pagamento_forma, pagamento_forma, QAfterFilterCondition>
       statusEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1014,6 +1088,62 @@ extension pagamento_formaQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'status',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<pagamento_forma, pagamento_forma, QAfterFilterCondition>
+      tef_tipoEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'tef_tipo',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<pagamento_forma, pagamento_forma, QAfterFilterCondition>
+      tef_tipoGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'tef_tipo',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<pagamento_forma, pagamento_forma, QAfterFilterCondition>
+      tef_tipoLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'tef_tipo',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<pagamento_forma, pagamento_forma, QAfterFilterCondition>
+      tef_tipoBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'tef_tipo',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1171,6 +1301,20 @@ extension pagamento_formaQuerySortBy
     });
   }
 
+  QueryBuilder<pagamento_forma, pagamento_forma, QAfterSortBy>
+      sortByPrint_comanda() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'print_comanda', Sort.asc);
+    });
+  }
+
+  QueryBuilder<pagamento_forma, pagamento_forma, QAfterSortBy>
+      sortByPrint_comandaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'print_comanda', Sort.desc);
+    });
+  }
+
   QueryBuilder<pagamento_forma, pagamento_forma, QAfterSortBy> sortByStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.asc);
@@ -1181,6 +1325,20 @@ extension pagamento_formaQuerySortBy
       sortByStatusDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.desc);
+    });
+  }
+
+  QueryBuilder<pagamento_forma, pagamento_forma, QAfterSortBy>
+      sortByTef_tipo() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tef_tipo', Sort.asc);
+    });
+  }
+
+  QueryBuilder<pagamento_forma, pagamento_forma, QAfterSortBy>
+      sortByTef_tipoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tef_tipo', Sort.desc);
     });
   }
 }
@@ -1339,6 +1497,20 @@ extension pagamento_formaQuerySortThenBy
     });
   }
 
+  QueryBuilder<pagamento_forma, pagamento_forma, QAfterSortBy>
+      thenByPrint_comanda() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'print_comanda', Sort.asc);
+    });
+  }
+
+  QueryBuilder<pagamento_forma, pagamento_forma, QAfterSortBy>
+      thenByPrint_comandaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'print_comanda', Sort.desc);
+    });
+  }
+
   QueryBuilder<pagamento_forma, pagamento_forma, QAfterSortBy> thenByStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.asc);
@@ -1349,6 +1521,20 @@ extension pagamento_formaQuerySortThenBy
       thenByStatusDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'status', Sort.desc);
+    });
+  }
+
+  QueryBuilder<pagamento_forma, pagamento_forma, QAfterSortBy>
+      thenByTef_tipo() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tef_tipo', Sort.asc);
+    });
+  }
+
+  QueryBuilder<pagamento_forma, pagamento_forma, QAfterSortBy>
+      thenByTef_tipoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tef_tipo', Sort.desc);
     });
   }
 }
@@ -1425,9 +1611,23 @@ extension pagamento_formaQueryWhereDistinct
     });
   }
 
+  QueryBuilder<pagamento_forma, pagamento_forma, QDistinct>
+      distinctByPrint_comanda() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'print_comanda');
+    });
+  }
+
   QueryBuilder<pagamento_forma, pagamento_forma, QDistinct> distinctByStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'status');
+    });
+  }
+
+  QueryBuilder<pagamento_forma, pagamento_forma, QDistinct>
+      distinctByTef_tipo() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'tef_tipo');
     });
   }
 }
@@ -1507,9 +1707,21 @@ extension pagamento_formaQueryProperty
     });
   }
 
+  QueryBuilder<pagamento_forma, int, QQueryOperations> print_comandaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'print_comanda');
+    });
+  }
+
   QueryBuilder<pagamento_forma, int, QQueryOperations> statusProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'status');
+    });
+  }
+
+  QueryBuilder<pagamento_forma, int, QQueryOperations> tef_tipoProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'tef_tipo');
     });
   }
 }

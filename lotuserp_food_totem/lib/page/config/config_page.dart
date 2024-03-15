@@ -92,7 +92,8 @@ class ConfigPage extends StatelessWidget {
         child: CustomElevatedButton(
             text: 'Confirmar',
             function: () {
-              CheckValid().ipValid(context, configController.ipSelecionadoController.text);
+              CheckValid().ipValid(
+                  context, configController.ipSelecionadoController.text);
             },
             radious: 0,
             colorButton: CustomColors.buttonsColor,

@@ -121,7 +121,7 @@ class MenuPage extends StatelessWidget {
               width: size.width,
               child: Column(
                 children: [
-                  const CustomHeader(text: 'Qual o seu pedido?'),
+                  CustomHeader(text: 'Qual o seu pedido?'),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                     child: _buildLineGroup(),

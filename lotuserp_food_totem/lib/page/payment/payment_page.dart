@@ -17,7 +17,6 @@ class PaymentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var paymentController = Dependencies.paymentController();
-    
 
     // Constrói o botão de voltar e de confirmar
     Widget _buildButton() {
@@ -26,7 +25,10 @@ class PaymentPage extends StatelessWidget {
         textContinueButton: 'Confirmar',
         colorBackButton: CustomColors.informationBox,
         colorContinueButton: CustomColors.confirmButtonColor,
-        functionBackButton: () => Get.back(),
+        functionBackButton: () {
+          Get.back();
+          paymentController.clearControllers();
+        },
         functionContinueButton: () => Get.back(),
         isPaymentPage: true,
       );
@@ -61,7 +63,7 @@ class PaymentPage extends StatelessWidget {
           CustomBackgroundImage(size: Get.size),
           Positioned(
             child: Column(children: [
-              const CustomHeader(text: 'Formas de Pagamento'),
+              CustomHeader(text: 'Formas de Pagamento'),
               Expanded(child: _buildGridView()),
               CustomContainerResume(size: Get.size),
               _buildButton()

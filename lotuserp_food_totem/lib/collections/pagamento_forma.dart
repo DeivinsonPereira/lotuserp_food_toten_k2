@@ -21,6 +21,8 @@ class pagamento_forma {
   int id_usuario_cinculo;
   int id_serie_nfce;
   int status;
+  int tef_tipo;
+  int print_comanda;
 
   pagamento_forma({
     required this.id,
@@ -35,6 +37,8 @@ class pagamento_forma {
     required this.id_usuario_cinculo,
     required this.id_serie_nfce,
     required this.status,
+    required this.tef_tipo,
+    required this.print_comanda,
   });
 
   Map<String, dynamic> toMap() {
@@ -51,6 +55,8 @@ class pagamento_forma {
       'id_usuario_cinculo': id_usuario_cinculo,
       'id_serie_nfce': id_serie_nfce,
       'status': status,
+      'tef_tipo': tef_tipo,
+      'print_comanda': print_comanda
     };
   }
 
@@ -68,6 +74,8 @@ class pagamento_forma {
       id_usuario_cinculo: map['id_usuario_cinculo'] as int,
       id_serie_nfce: map['id_serie_nfce'] as int,
       status: map['status'] as int,
+      tef_tipo: map['tef_tipo'] as int,
+      print_comanda: map['print_comanda'] as int,
     );
   }
 

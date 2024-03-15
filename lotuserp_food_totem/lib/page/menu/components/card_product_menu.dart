@@ -1,12 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, no_leading_underscores_for_local_identifiers
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lotus_food_totem/common/components/custom_text_style.dart';
 import 'package:lotus_food_totem/services/format_numbers.dart';
+import 'package:lotus_food_totem/services/image_product_tratment.dart';
 import 'package:lotus_food_totem/services/text_max_length.dart';
 
 import '../../../collections/produto.dart';
-import '../../../shared/components/endpoints.dart';
 
 class CardProductMenu extends StatelessWidget {
   final Size size;
@@ -19,7 +18,6 @@ class CardProductMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // Constrói o título do card
     Widget _buildCardTitle() {
       return Text(
@@ -87,10 +85,8 @@ class CardProductMenu extends StatelessWidget {
         child: ClipRRect(
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-          child: CachedNetworkImage(
-            imageUrl: Endpoints().endpointSearchImageProduct(
-                produtoEscolhido.file_imagem),
-          ),
+          child:
+              ImageProductTratment().imageProduct(produtoEscolhido.file_imagem),
         ),
       );
     }

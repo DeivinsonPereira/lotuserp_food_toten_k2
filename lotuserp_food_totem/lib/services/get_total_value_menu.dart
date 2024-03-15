@@ -17,7 +17,7 @@ class GetTotalValueMenu {
         }
       }
     }
-
+    menuController.total.value = total;
     return FormatNumbers.formatNumbertoString(total);
   }
 }

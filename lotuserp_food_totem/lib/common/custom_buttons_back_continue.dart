@@ -14,6 +14,7 @@ class CustomButtonsBackContinue extends StatelessWidget {
   final Function() functionBackButton;
   final Function() functionContinueButton;
   bool? isPaymentPage;
+  bool? isIdentifyPage;
 
   CustomButtonsBackContinue(
       {Key? key,
@@ -23,7 +24,8 @@ class CustomButtonsBackContinue extends StatelessWidget {
       required this.colorContinueButton,
       required this.functionBackButton,
       required this.functionContinueButton,
-      this.isPaymentPage = false})
+      this.isPaymentPage = false,
+      this.isIdentifyPage = false})
       : super(key: key);
 
   @override
@@ -53,7 +55,7 @@ class CustomButtonsBackContinue extends StatelessWidget {
     }
 
     return Row(children: [
-      Expanded(
+      isIdentifyPage == true ? const SizedBox() : Expanded(
         child: _buildBackButton(),
       ),
       isPaymentPage == true

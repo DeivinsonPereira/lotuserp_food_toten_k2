@@ -1,13 +1,13 @@
 // ignore_for_file: sized_box_for_whitespace
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotus_food_totem/common/components/menu_variables.dart';
 import 'package:lotus_food_totem/core/app_colors.dart';
 import 'package:lotus_food_totem/page/menu/menu_page.dart';
 import 'package:lotus_food_totem/services/dependencies.dart';
+import 'package:lotus_food_totem/services/image_background_tratment.dart';
+import 'package:lotus_food_totem/services/image_logo_tratment.dart';
 
 class OptionPage extends StatelessWidget {
   const OptionPage({super.key});
@@ -31,18 +31,15 @@ class OptionPage extends StatelessWidget {
                     borderRadius: const BorderRadius.only(
                       bottomRight: Radius.circular(70),
                     ),
-                    child: Image.file(
-                      File(sliderController.backgroundImage.value),
-                      fit: BoxFit.fitWidth,
-                    ),
+                    child: ImageBackgroundTratment().buildBackground(),
                   ),
                 ),
                 Positioned(
                   top: Get.size.height * 0.1,
                   width: Get.size.width * 1,
                   height: Get.size.height * 0.4,
-                  child: Image.file(File(sliderController.logoImage.value),
-                      width: 600, height: 500, scale: 0.8),
+                  child: ImageLogoTratment()
+                      .buildWhiteLogo(sliderController.logoImage.value),
                 ),
               ],
             ),

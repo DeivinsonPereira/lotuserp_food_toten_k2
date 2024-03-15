@@ -21,6 +21,14 @@ class CustomTextStyle {
   );
 
   static const TextStyle textPriceBlackSmall = TextStyle(
-      fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16);
+    fontWeight: FontWeight.bold,
+    color: Colors.black,
+    fontSize: 16,
+  );
 
+  static const TextStyle textPaymentBlackLarge = TextStyle(
+    fontWeight: FontWeight.bold,
+    color: CustomColors.backSlider,
+    fontSize: 50,
+  );
 }

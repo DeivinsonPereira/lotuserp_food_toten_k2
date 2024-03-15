@@ -5,13 +5,13 @@ import 'package:get/get.dart';
 import 'package:lotus_food_totem/common/custom_buttons_back_continue.dart';
 import 'package:lotus_food_totem/common/custom_header.dart';
 import 'package:lotus_food_totem/core/app_colors.dart';
+import 'package:lotus_food_totem/page/identify/identify_page.dart';
 import 'package:lotus_food_totem/services/carrinho_is_empty.dart';
 import 'package:lotus_food_totem/services/dependencies.dart';
 
 import '../../common/custom_background_image.dart';
 import '../../common/custom_container_resume.dart';
 import '../../controller/menu_controller.dart';
-import '../payment/payment_page.dart';
 import 'components/custom_card_cart_shop.dart';
 
 class CartShop extends StatelessWidget {
@@ -22,35 +22,6 @@ class CartShop extends StatelessWidget {
     Dependencies.menuController();
     Size size = Get.size;
     var paymentController = Dependencies.paymentController();
-    
-
-    /*  // Constrói o botão de voltar
-    Widget _buildBackButton() {
-      return SizedBox(
-        height: 100,
-        child: CustomElevatedButton(
-            text: 'Voltar',
-            function: () => Get.back(),
-            radious: 0,
-            colorButton: CustomColors.informationBox,
-            styleText: CustomTextStyle.textButtonStyleWhite),
-      );
-    }
-
-    // Constrói o botão de confirmar
-    Widget _buildConfirmButton() {
-      return SizedBox(
-          height: 100,
-          child: CustomElevatedButton(
-              text: 'Confirmar',
-              function: () {
-                CarrinhoIsEmpty().verifyCarrinhoToPaymentForms(context);
-                Get.to(() => const PaymentPage());
-              },
-              radious: 0,
-              colorButton: CustomColors.confirmButtonColor,
-              styleText: CustomTextStyle.textButtonStyle));
-    }*/
 
     // Constrói a linha dos botões
     Widget _buildButtons() {
@@ -63,14 +34,10 @@ class CartShop extends StatelessWidget {
         functionContinueButton: () {
           CarrinhoIsEmpty().verifyCarrinhoToPaymentForms(context);
           paymentController.setPaymentForm(context);
-          Get.to(() => const PaymentPage());
+          Get.to(() => const IdentifyPage());
         },
       );
 
-      /*Row(children: [
-        Expanded(child: _buildBackButton()),
-        Expanded(child: _buildConfirmButton()),
-      ]);*/
     }
 
     // Constrói a lista de itens no carrinho
@@ -102,7 +69,7 @@ class CartShop extends StatelessWidget {
           Positioned(
             child: Column(
               children: [
-                const CustomHeader(text: 'Seu carrinho'),
+                CustomHeader(text: 'Seu carrinho'),
                 Expanded(
                   child: _buildCartList(),
                 ),

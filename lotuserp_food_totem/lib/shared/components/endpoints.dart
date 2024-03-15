@@ -37,4 +37,9 @@ class Endpoints {
   String endpointSearchPaymentForm() {
     return '${configController.ipSelecionado}food_totem_id?pid=${configController.deviceId.value}';
   }
+
+  String endpointPostNFCE() {
+    return '${configController.ipSelecionado}nfce_emitir';
+  }
+
 }

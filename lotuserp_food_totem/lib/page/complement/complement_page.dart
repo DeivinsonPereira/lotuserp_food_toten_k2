@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotus_food_totem/common/components/custom_text_style.dart';
@@ -15,9 +14,9 @@ import 'package:lotus_food_totem/services/get_total_value_complements.dart';
 import 'package:lotus_food_totem/services/text_max_length.dart';
 
 import '../../collections/produto.dart';
+import '../../services/image_complement_tratament.dart';
 import 'components/custom_card_complement.dart';
 import '../../services/format_numbers.dart';
-import '../../shared/components/endpoints.dart';
 
 class ComplementPage extends StatelessWidget {
   final produto produtoEscolhido;
@@ -88,11 +87,7 @@ class ComplementPage extends StatelessWidget {
           height: Get.size.height * 0.135,
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
-            child: CachedNetworkImage(
-              imageUrl: Endpoints()
-                  .endpointSearchImageProduct(produtoEscolhido.file_imagem),
-              fit: BoxFit.fitHeight,
-            ),
+            child:ImageComplementTratment().imageComplement(produtoEscolhido.file_imagem)
           ),
         ),
       );
@@ -135,44 +130,6 @@ class ComplementPage extends StatelessWidget {
         ),
       );
     }
-/*
-    // Constrói o botão de voltar
-    Widget _buildButtonBack() {
-      return SizedBox(
-        height: 100,
-        child: CustomElevatedButton(
-            text: 'Voltar',
-            function: () {
-              Get.back();
-              menuController.clearComplementoSelecionado();
-              menuController.clearInformationTextController();
-            },
-            radious: 0,
-            colorButton: CustomColors.informationBox,
-            styleText: CustomTextStyle.textButtonStyleWhite),
-      );
-    }*/
-
-  /*  // Constrói o botão de confirmar
-    Widget _buildButtonConfirm() {
-      return SizedBox(
-        height: 100,
-        child: CustomElevatedButton(
-            text: 'Confirmar',
-            function: () {
-              if (isEdit == false) {
-                menuController.updateCarrinho(produtoEscolhido);
-                Get.back();
-              } else {
-                menuController.updateCarrinhoCartShop(produtoEscolhido, index!);
-                Get.back();
-              }
-            },
-            radious: 0,
-            colorButton: CustomColors.confirmButtonColor,
-            styleText: CustomTextStyle.textButtonStyle),
-      );
-    }*/
 
     // Constrói a linha dos botões de voltar e confirmar
     Widget _buildButtons() {
@@ -196,14 +153,6 @@ class ComplementPage extends StatelessWidget {
             }
           });
 
-      /*Row(children: [
-        Expanded(
-          child: _buildButtonBack(),
-        ),
-        Expanded(
-          child: _buildButtonConfirm(),
-        ),
-      ]);*/
     }
 
     // Constrói a linha do Resumo
@@ -262,7 +211,7 @@ class ComplementPage extends StatelessWidget {
     Widget _buildBody() {
       return Column(
         children: [
-          const CustomHeaderPopup(icon: Icons.add_circle, text: "Complementos"),
+          CustomHeaderPopup(icon: Icons.add_circle, text: "Complementos"),
           _buildInfoProduct(),
           const SizedBox(height: 10),
           const Padding(
