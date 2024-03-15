@@ -5,3 +5,5 @@
 -keep class io.flutter.view.**  { *; }
 -keep class io.flutter.**  { *; }
 -keep class io.flutter.plugins.**  { *; }
+-keep class n1.c { *; }
+-keep class j1.d$a { *; }
